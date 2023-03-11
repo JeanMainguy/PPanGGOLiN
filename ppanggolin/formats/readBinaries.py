@@ -277,7 +277,7 @@ def read_gene_sequences(pangenome: Pangenome, h5f: tables.File, disable_bar: boo
 
     for row in tqdm(read_chunks(table, chunk=20000), total=table.nrows, unit="gene", disable=disable_bar):
         gene = pangenome.get_gene(row['gene'].decode())
-        gene.add_dna(row['dna'].decode())
+        gene.add_dna_non_redondant(row['dna'].decode())
     pangenome.status["geneSequences"] = "Loaded"
 
 

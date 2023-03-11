@@ -569,6 +569,10 @@ def annotate_pangenome(pangenome: Pangenome, fasta_list: str, tmpdir: str, cpu: 
         p.close()
         p.join()
 
+    for gene in pangenome.genes:
+        gene.to_non_redondant_dna()
+        gene.to_non_redondant_protein()
+
     logging.getLogger().info("Done annotating genomes")
     pangenome.status["genomesAnnotated"] = "Computed"  # the pangenome is now annotated.
     pangenome.status["geneSequences"] = "Computed"  # the gene objects have their respective gene sequences.

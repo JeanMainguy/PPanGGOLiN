@@ -62,8 +62,15 @@ def test_fill_parents(o_feature):
 def test_add_dna(o_feature):
     dna = "test adn"
     o_feature.add_dna(dna)
-    o_feature.dna = dna
     assert o_feature.dna == dna
     dna = 123
     with pytest.raises(TypeError):
         o_feature.add_dna(dna)
+        
+def test_add_dna_non_redondant(o_feature):
+    dna = "test adn"
+    o_feature.add_dna_non_redondant(dna)
+    assert o_feature.dna == dna
+    dna = 123
+    with pytest.raises(TypeError):
+        o_feature.add_dna_non_redondant(dna)

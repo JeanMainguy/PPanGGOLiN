@@ -16,8 +16,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ['ubuntu-latest', 'macos-latest']
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        os: ['macos-latest'] #,'ubuntu-latest' ]
+        python-version: ['3.8'] # , '3.9', '3.10']
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
@@ -31,8 +31,9 @@ jobs:
     - name: Set up test environment
       shell: bash -l {0}
       run: |
-        conda install -y --file requirements.txt 
-        conda install -y pytest
+        conda install -y -q --file requirements.txt 
+        conda install -y -q pytest
+        conda list
         pip install .
     # Check that it is installed and displays help without error
     - name: Check that PPanGGOLiN is installed

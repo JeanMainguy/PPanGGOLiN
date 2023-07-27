@@ -34,7 +34,7 @@ jobs:
         conda install -y -q --file requirements.txt 
         conda install -y -q pytest
         conda list
-        # pip install wheel
+        pip install wheel
         pip install .
         
     # Check that it is installed and displays help without error

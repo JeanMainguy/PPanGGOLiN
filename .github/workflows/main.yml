@@ -35,6 +35,7 @@ jobs:
       run: |
         conda install -y --file requirements.txt 
         conda install -y pytest
+        pip install Cmake
         pip install .
     # Check that it is installed and displays help without error
     - name: Check that PPanGGOLiN is installed

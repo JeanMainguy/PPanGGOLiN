@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - main
+      - master
 
 permissions:
   contents: write
@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main
+      - name: Checkout master
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: master
           fetch-depth: 0
 
       - name: Get version
@@ -76,12 +76,31 @@ jobs:
           git tag "$VERSION"
           git push origin "$VERSION"
 
+      - name: Get previous release tag
+        id: previous
+        run: |
+          PREVIOUS_TAG=$(git tag --list \
+            --sort=-version:refname \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            | grep -v "^${{ steps.version.outputs.version }}$" \
+            | head -n 1)
+
+          if [[ -z "$PREVIOUS_TAG" ]]; then
+            echo "::error::Could not find previous release tag."
+            exit 1
+          fi
+
+          echo "Previous release: $PREVIOUS_TAG"
+          echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
+
       - name: Create draft release
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
+          PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
         run: |
           gh release create "$VERSION" \
             --title "PPanGGOLiN $VERSION" \
             --draft \
-            --generate-notes
+            --generate-notes \
+            --notes-start-tag "$PREVIOUS_TAG"
